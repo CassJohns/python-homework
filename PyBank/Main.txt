@@ -1,0 +1,94 @@
+```python
+# Import the pathlib and csv library
+from pathlib import Path
+import csv
+
+# Set the file path
+csvpath = Path('budget_data.csv')
+
+#Initialize an emptylist object to hold the contents of budget_data.csv
+budgets = []
+
+# Initialize line_num variable
+revenue = 0
+previous_revenue = 0
+total_months = 0
+average_months = 0
+total_revenue = 0
+profit_change = 0
+total_change = 0 
+average_change = 0
+greatest_increase = 0
+greatest_decrease = 0
+
+
+# Use a with statement and open the budget_data.csv by using its file path. 
+#Use the reader function from the csv library to begin reading budget_data.csv
+with open(csvpath, 'r') as csvfile:
+        csvreader = csv.reader(csvfile, delimiter=',')
+#Use the next function to skip the header (first row of the CSV).
+        csv_header = next(csvreader)
+        csv_header.append("Profit Change")
+        budgets.append(csv_header)
+               
+# Read each row of data after the header.  Add a column for the previous profit and change in profit from one month to the next.  
+        for row in csvreader:
+            month = row[0]
+            revenue = int(row[1])
+            row.append(previous_revenue)
+            budgets.append(row)
+            if previous_revenue == 0:  
+                previous_revenue = revenue
+            previous_revenue += profit_change
+            profit_change = revenue - previous_revenue
+            total_revenue += revenue
+            row.append(profit_change)
+            budgets.append(row)
+            
+#Figure out the minimum and manximum profit change 
+            
+            if profit_change >= greatest_increase:
+                greatest_increase = profit_change
+                increase_month = month
+     
+            if profit_change <= greatest_decrease:
+                greatest_decrease = profit_change
+                decrease_month = month 
+                
+#calculate the total months and total change in profit 
+            total_months += 1
+            total_change += profit_change 
+            print(row)
+           
+    
+#figure out the average change in profit 
+average_months = total_months - 1        
+average_change = round((total_change / average_months), 2)
+
+print()        
+print("Financial Analysis")
+print("--------------------------")
+print(f"Total Months: {total_months}")
+print(f"Total: ${total_revenue}")
+print(f"Average Change: ${average_change}")  
+print(f"Greatest Increase in Profits: {increase_month} (${greatest_increase})")
+print(f"Greatest Decrease in Profits: {decrease_month} (${greatest_decrease})")
+
+
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
